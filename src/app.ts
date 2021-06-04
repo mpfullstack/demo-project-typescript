@@ -44,6 +44,44 @@ function Autobind(
   }
   return newDescriptor;
 };
+
+class ProjectItem {
+  projectItemTemplate: HTMLTemplateElement;
+  projectItemElement: HTMLLIElement;
+
+  constructor() {
+    this.projectItemTemplate = document.getElementById("single-project") as HTMLTemplateElement;
+    // Clone project item template content and get real project item element
+    const importedNode = document.importNode(this.projectItemTemplate.content, true);
+    this.projectItemElement = importedNode.firstElementChild as HTMLLIElement;
+  }
+}
+
+class ProjectList {
+  projectListTemplate: HTMLTemplateElement;
+  projectSectionElement: HTMLElement;
+  projectListElement: HTMLUListElement;
+  projectItems: ProjectItem[] = [];
+
+  constructor() {
+    this.projectListTemplate = document.getElementById("project-list")! as HTMLTemplateElement;
+    // Clone project template
+    const importedNode = document.importNode(this.projectListTemplate.content, true);
+    // Get project section element
+    this.projectSectionElement = importedNode.firstElementChild as HTMLElement;
+    // Get real project list element
+    this.projectListElement = this.projectSectionElement.querySelector("ul") as HTMLUListElement;
+  }
+
+  addProject(item: ProjectItem) {
+    this.projectItems.push(item);
+  }
+
+  attach(target: HTMLElement) {
+    target.appendChild(this.projectSectionElement);
+  }
+}
+
 class ProjectInput {
   formTemplate: HTMLTemplateElement;
   targetElement: HTMLDivElement;
